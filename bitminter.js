@@ -34,8 +34,8 @@ function talk (path, props, cb) {
     props = null;
   }
 
-  if (path.match (/^users/)) {
-    opts.headers.Aithorization = 'key=' + module.exports.apikey;
+  if (path.match (/^\/users/)) {
+    opts.headers.Authorization = 'key=' + config.apikey;
   }
 
   opts.parameters = props;
