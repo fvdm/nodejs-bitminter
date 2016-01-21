@@ -51,7 +51,6 @@ function log (type, str) {
 function typeStr (str) {
   var output = '';
   var instance = null;
-  var i;
 
   switch (typeof str) {
     case 'string':
