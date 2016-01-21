@@ -5,16 +5,23 @@ Feedback:       https://github.com/fvdm/nodejs-bitminter/issues
 License:        Unlicense (public domain)
 */
 
-var app = require ('./');
-var colorTerm = String (process.env.TERM) .match (/color$/);
+'use strict';
+
+var util = require ('util');
+var path = require ('path');
+var dir = path.dirname (module.filename);
+
+var pkg = require (path.join (dir, 'package.json'));
+var app = require (path.join (dir));
 
 var errors = 0;
+var warnings = 0;
 var queue = [];
 var next = 0;
 
 
 // Setup
-// set env GEOIP2WS_USERID and GEOIP2WS_LICENSE  (CI tests)
+// set env BITMINTER_APIKEY and BITMINTER_USERNAME  (CI tests)
 var config = {
   apikey: process.env.BITMINTER_APIKEY || null,
   username: process.env.BITMINTER_USERNAME || null,
@@ -24,60 +31,70 @@ var config = {
 var bitminter = app (config);
 
 
-// Logging
-function styleStr (style, str) {
-  var styles = {
-    bold: '\u001b[1m',
-    plain: '\u001b[0m',
-    boldred: '\u001b[1m\u001b[31m',
-    red: '\u001b[31m',
-    green: '\u001b[32m',
-    yellow: '\u001b[33m',
-    gray: '\u001b[90m'
-  };
-
-  return colorTerm ? styles [style] + str + styles.plain : str;
-}
-
+// Color string
 function log (type, str) {
   if (!str) {
     str = type;
     type = 'plain';
   }
 
-  if (typeof str === 'object') {
-    console.dir (str, {
-      depth: null,
-      colors: colorTerm
-    });
-
-    return;
-  }
-
   switch (type) {
-    case 'info': console.log (styleStr ('yellow', 'info') + ' - ' + str); break;
-    case 'fail': console.log (styleStr ('red', 'fail') + ' - ' + str); break;
-    case 'good': console.log (styleStr ('green', 'good') + ' - ' + str); break;
-    case 'bold': console.log (styleStr ('bold', str)); break;
-    case 'error': console.log (styleStr ('boldred', str)); break;
+    case 'error': console.log ('\u001b[1m\u001b[31mERR\u001b[0m  - ' + str + '\n'); break;
+    case 'fail': console.log ('\u001b[31mFAIL\u001b[0m - ' + str); break;
+    case 'good': console.log ('\u001b[32mgood\u001b[0m - ' + str); break;
+    case 'warn': console.log ('\u001b[33mwarn\u001b[0m - ' + str); break;
+    case 'info': console.log ('\u001b[36minfo\u001b[0m - ' + str); break;
+    case 'note': console.log ('\u001b[1m' + str + '\u001b[0m'); break;
     case 'plain': default: console.log (str); break;
   }
 }
 
+function typeStr (str) {
+  var output = '';
+  var instance = null;
+  var i;
+
+  switch (typeof str) {
+    case 'string':
+      output = '"' + str +'"';
+      break;
+
+    case 'object':
+      instance = str instanceof Object && 'Object';
+      instance = !instance ? str instanceof Array && 'Array' : instance;
+      instance = !instance ? str instanceof Error && 'Error' : instance;
+      output = '\u001b[35m' + instance + '\u001b[0m';
+      break;
+
+    case 'function':
+    case 'true':
+    case 'false':
+    case 'undefined':
+    default:
+      output = '\u001b[35m' + str + '\u001b[0m';
+      break;
+  }
+
+  return output;
+}
 
 // handle exits
 process.on ('exit', function () {
-  if (errors === 0) {
-    log ('bold', '\nDONE, no errors.\n');
-    process.exit (0);
-  } else {
-    log ('bold', '\nFAIL, ' + errors + ' error' + (errors > 1 ? 's' : '') + ' occurred!\n');
+  console.log ();
+  log ('info', errors + ' errors');
+  log ('info', warnings + ' warnings');
+  console.log ();
+
+  if (errors) {
     process.exit (1);
+  } else {
+    process.exit (0);
   }
 });
 
 // prevent errors from killing the process
 process.on ('uncaughtException', function (err) {
+  console.log (err);
   console.log ();
   console.log (err.stack);
   console.log ();
@@ -87,40 +104,86 @@ process.on ('uncaughtException', function (err) {
 // Queue to prevent flooding
 function doNext () {
   next++;
-  if (queue[next]) {
-    queue[next] ();
+  if (queue [next]) {
+    queue [next] ();
   }
 }
 
-// doTest (passErr, 'methods', [
-//   ['feeds', typeof feeds === 'object']
-// ])
+/**
+ * doTest checks for error
+ * else runs specified tests
+ *
+ * @param {Error} err
+ * @param {String} label
+ * @param {Array} tests
+ *
+ * doTest(err, 'label text', [
+ *   ['fail', 'feeds', typeof feeds, 'object'],
+ *   ['warn', 'music', music instanceof Array, true],
+ *   ['info', 'tracks', music.length]
+ * ]);
+ */
+
 function doTest (err, label, tests) {
+  var level = 'good';
   var testErrors = [];
+  var testWarnings = [];
+  var test;
+  var i;
 
   if (err instanceof Error) {
-    log ('fail', label);
-    console.dir (err, { depth: null, colors: colorTerm });
+    log ('error', label);
+    console.dir (err, { depth: null, colors: true });
     console.log ();
     console.log (err.stack);
     console.log ();
     errors++;
-  } else {
-    tests.forEach (function (test) {
-      if (test[1] !== true) {
-        testErrors.push (test[0]);
-        errors++;
-      }
-    });
 
-    if (testErrors.length === 0) {
-      log ('good', label);
-    } else {
-      log ('fail', label + ' (' + testErrors.join (', ') + ')');
+    doNext ();
+    return;
+  }
+
+  for (i = 0; i < tests.length; i++) {
+    test = {
+      level: tests [i] [0],
+      label: tests [i] [1],
+      result: tests [i] [2],
+      expect: tests [i] [3]
+    };
+
+    if (test.level === 'fail' && test.result !== test.expect) {
+      testErrors.push (test);
+      errors++;
+    }
+
+    if (test.level === 'warn' && test.result !== test.expect) {
+      testWarnings.push (test);
+      warnings++;
+    }
+
+    if (test.level === 'info') {
+      log('info', test.label + ' - ' + test.result);
     }
   }
 
-  doNext ();
+  level = testWarnings.length ? 'warn' : level;
+  level = testErrors.length ? 'fail' : level;
+
+  log (level, label);
+
+  if (testErrors.length) {
+    testErrors.forEach (function (testpart) {
+      log('fail', ' └ ' + testpart.label + ': ' + typeStr (testpart.result) + ' is not ' + typeStr (testpart.expect));
+    });
+  }
+
+  if (testWarnings.length) {
+    testWarnings.forEach (function (testpart) {
+      log('warn', ' └ ' + testpart.label + ': ' + typeStr (testpart.result) + ' is not ' + typeStr (testpart.expect));
+    });
+  }
+
+  doNext();
 }
 
 
@@ -128,7 +191,7 @@ function doTest (err, label, tests) {
 queue.push (function () {
   bitminter.pool.stats (function (err, data) {
     doTest (err, 'pool.stats', [
-      ['type', data instanceof Object]
+      ['fail', 'type', data instanceof Object, true]
     ]);
   });
 });
@@ -137,7 +200,7 @@ queue.push (function () {
 queue.push (function () {
   bitminter.pool.hashrate (function (err, data) {
     doTest (err, 'pool.hashrate', [
-      ['type', typeof data === 'number']
+      ['fail', 'type', typeof data, 'number']
     ]);
   });
 });
@@ -146,7 +209,7 @@ queue.push (function () {
 queue.push (function () {
   bitminter.pool.workers (function (err, data) {
     doTest (err, 'pool.workers', [
-      ['type', typeof data === 'number']
+      ['fail', 'type', typeof data, 'number']
     ]);
   });
 });
@@ -155,7 +218,7 @@ queue.push (function () {
 queue.push (function () {
   bitminter.pool.users (function (err, data) {
     doTest (err, 'pool.users', [
-      ['type', typeof data === 'number']
+      ['fail', 'type', typeof data, 'number']
     ]);
   });
 });
@@ -164,7 +227,7 @@ queue.push (function () {
 queue.push (function () {
   bitminter.pool.round (function (err, data) {
     doTest (err, 'pool.round', [
-      ['type', data instanceof Object]
+      ['fail', 'type', data instanceof Object, true]
     ]);
   });
 });
@@ -173,7 +236,7 @@ queue.push (function () {
 queue.push (function () {
   bitminter.pool.blocks (function (err, data) {
     doTest (err, 'pool.blocks normal', [
-      ['type', data instanceof Array]
+      ['fail', 'type', data instanceof Array, true]
     ]);
   });
 });
@@ -182,8 +245,8 @@ queue.push (function () {
 queue.push (function () {
   bitminter.pool.blocks ({ max: 3 }, function (err, data) {
     doTest (err, 'pool.blocks option', [
-      ['type', data instanceof Array],
-      ['amount', data.length <= 3]
+      ['fail', 'type', data instanceof Array, true],
+      ['fail', 'amount', data.length <= 3, true]
     ]);
   });
 });
@@ -192,7 +255,7 @@ queue.push (function () {
 queue.push (function () {
   bitminter.pool.shifts (function (err, data) {
     doTest (err, 'pool.shifts normal', [
-      ['type', data instanceof Array]
+      ['fail', 'type', data instanceof Array, true]
     ]);
   });
 });
@@ -201,8 +264,8 @@ queue.push (function () {
 queue.push (function () {
   bitminter.pool.shifts ({ max: 3 }, function (err, data) {
     doTest (err, 'pool.shifts option', [
-      ['type', data instanceof Array],
-      ['amount', data.length <= 3]
+      ['fail', 'type', data instanceof Array, true],
+      ['fail', 'amount', data.length <= 3, true]
     ]);
   });
 });
@@ -211,7 +274,7 @@ queue.push (function () {
 queue.push (function () {
   bitminter.pool.top50 (function (err, data) {
     doTest (err, 'pool.top50', [
-      ['type', data instanceof Object]
+      ['fail', 'type', data instanceof Object, true]
     ]);
   });
 });
@@ -223,7 +286,7 @@ queue.push (function () {
   } else {
     bitminter.users.get (function (err, data) {
       doTest (err, 'users.get self', [
-        ['type', data instanceof Object]
+        ['fail', 'type', data instanceof Object, true]
       ]);
     });
   }
@@ -238,7 +301,7 @@ queue.push (function () {
   } else {
     bitminter.users.get (config.username, function (err, data) {
       doTest (err, 'users.get username', [
-        ['type', data instanceof Object]
+        ['fail', 'type', data instanceof Object, true]
       ]);
     });
   }
@@ -246,4 +309,9 @@ queue.push (function () {
 
 
 // Start the tests
+log ('note', 'Running tests...\n');
+log ('note', 'Node.js:  ' + process.versions.node);
+log ('note', 'Module:   ' + pkg.version);
+console.log ();
+
 queue[0] ();
