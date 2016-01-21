@@ -47,7 +47,7 @@ function colorStr (color, str) {
   return colors [color] + str + colors.plain;
 }
 
-function log (type, str, indent) {
+function log (type, str) {
   if (!str) {
     str = type;
     type = 'plain';
