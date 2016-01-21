@@ -65,6 +65,7 @@ function typeStr (str) {
       break;
 
     case 'function':
+    case 'number':
     case 'true':
     case 'false':
     case 'undefined':
