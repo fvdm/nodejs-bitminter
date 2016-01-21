@@ -31,50 +31,51 @@ var bitminter = app (config);
 
 
 // Color string
-function log (type, str) {
+function colorStr (color, str) {
+  var colors = {
+    red: '\u001b[31m',
+    green: '\u001b[32m',
+    yellow: '\u001b[33m',
+    blue: '\u001b[34m',
+    magenta: '\u001b[35m',
+    cyan: '\u001b[36m',
+    gray: '\u001b[37m',
+    bold: '\u001b[1m',
+    plain: '\u001b[0m'
+  };
+
+  return colors [color] + str + colors.plain;
+}
+
+function log (type, str, indent) {
   if (!str) {
     str = type;
     type = 'plain';
   }
 
   switch (type) {
-    case 'error': console.log ('\u001b[1m\u001b[31mERR\u001b[0m  - ' + str + '\n'); break;
-    case 'fail': console.log ('\u001b[31mFAIL\u001b[0m - ' + str); break;
-    case 'good': console.log ('\u001b[32mgood\u001b[0m - ' + str); break;
-    case 'warn': console.log ('\u001b[33mwarn\u001b[0m - ' + str); break;
-    case 'info': console.log ('\u001b[36minfo\u001b[0m - ' + str); break;
-    case 'note': console.log ('\u001b[1m' + str + '\u001b[0m'); break;
+    case 'error': console.log (colorStr ('red', colorStr ('bold', 'ERR     ')) + str + '\n'); break;
+    case 'fail': console.log (colorStr ('red', 'FAIL') + '    ' + str); break;
+    case 'good': console.log (colorStr ('green', 'good') + '    ' + str); break;
+    case 'warn': console.log (colorStr ('yellow', 'warn') + '    ' + str); break;
+    case 'info': console.log (colorStr ('cyan', 'info') + '    ' + str); break;
+    case 'note': console.log (colorStr ('bold', str)); break;
     case 'plain': default: console.log (str); break;
   }
 }
 
 function typeStr (str) {
-  var output = '';
-  var instance = null;
-
-  switch (typeof str) {
-    case 'string':
-      output = '"' + str + '"';
-      break;
-
-    case 'object':
-      instance = str instanceof Object && 'Object';
-      instance = !instance ? str instanceof Array && 'Array' : instance;
-      instance = !instance ? str instanceof Error && 'Error' : instance;
-      output = '\u001b[35m' + instance + '\u001b[0m';
-      break;
-
-    case 'function':
-    case 'number':
-    case 'true':
-    case 'false':
-    case 'undefined':
-    default:
-      output = '\u001b[35m' + str + '\u001b[0m';
-      break;
+  if (typeof str === 'string') {
+    str = '"' + str + '"';
+  } else if (str instanceof Object) {
+    str = 'Object';
+  } else if (str instanceof Array) {
+    str = 'Array';
+  } else if (str instanceof Error) {
+    str = 'Error';
   }
 
-  return output;
+  return colorStr ('magenta', str);
 }
 
 // handle exits
@@ -104,6 +105,7 @@ process.on ('uncaughtException', function (err) {
 function doNext () {
   next++;
   if (queue [next]) {
+    console.log ();
     queue [next] ();
   }
 }
@@ -125,8 +127,6 @@ function doNext () {
 
 function doTest (err, label, tests) {
   var level = 'good';
-  var testErrors = [];
-  var testWarnings = [];
   var test;
   var i;
 
@@ -142,6 +142,8 @@ function doTest (err, label, tests) {
     return;
   }
 
+  log ('note', colorStr ('blue', '(' + (next + 1) + '/' + queue.length + ') ') + label);
+
   for (i = 0; i < tests.length; i++) {
     test = {
       level: tests [i] [0],
@@ -150,39 +152,28 @@ function doTest (err, label, tests) {
       expect: tests [i] [3]
     };
 
+    if (test.result === test.expect) {
+      log ('good', colorStr ('blue', test.label) + ': ' + typeStr (test.result) + ' is exactly ' + typeStr (test.expect));
+    }
+
     if (test.level === 'fail' && test.result !== test.expect) {
-      testErrors.push (test);
       errors++;
+      level = 'fail';
+      log ('fail', colorStr ('blue', test.label) + ': ' + typeStr (test.result) + ' is not ' + typeStr (test.expect));
     }
 
     if (test.level === 'warn' && test.result !== test.expect) {
-      testWarnings.push (test);
       warnings++;
+      level = level !== 'fail' && 'warn';
+      log ('warn', colorStr ('blue', test.label) + ': ' + typeStr (test.result) + ' is not ' + typeStr (test.expect));
     }
 
     if (test.level === 'info') {
-      log('info', test.label + ' - ' + test.result);
+      log ('info', colorStr ('blue', test.label) + ': ' + typeStr (test.result));
     }
   }
 
-  level = testWarnings.length ? 'warn' : level;
-  level = testErrors.length ? 'fail' : level;
-
-  log (level, label);
-
-  if (testErrors.length) {
-    testErrors.forEach (function (testpart) {
-      log('fail', ' └ ' + testpart.label + ': ' + typeStr (testpart.result) + ' is not ' + typeStr (testpart.expect));
-    });
-  }
-
-  if (testWarnings.length) {
-    testWarnings.forEach (function (testpart) {
-      log('warn', ' └ ' + testpart.label + ': ' + typeStr (testpart.result) + ' is not ' + typeStr (testpart.expect));
-    });
-  }
-
-  doNext();
+  doNext ();
 }
 
 
@@ -199,7 +190,8 @@ queue.push (function () {
 queue.push (function () {
   bitminter.pool.hashrate (function (err, data) {
     doTest (err, 'pool.hashrate', [
-      ['fail', 'type', typeof data, 'number']
+      ['fail', 'type', typeof data, 'number'],
+      ['info', 'value', data]
     ]);
   });
 });
@@ -208,7 +200,8 @@ queue.push (function () {
 queue.push (function () {
   bitminter.pool.workers (function (err, data) {
     doTest (err, 'pool.workers', [
-      ['fail', 'type', typeof data, 'number']
+      ['fail', 'type', typeof data, 'number'],
+      ['info', 'value', data]
     ]);
   });
 });
@@ -217,7 +210,8 @@ queue.push (function () {
 queue.push (function () {
   bitminter.pool.users (function (err, data) {
     doTest (err, 'pool.users', [
-      ['fail', 'type', typeof data, 'number']
+      ['fail', 'type', typeof data, 'number'],
+      ['info', 'value', data]
     ]);
   });
 });
@@ -281,7 +275,9 @@ queue.push (function () {
 
 queue.push (function () {
   if (!config.apikey) {
-    log ('info', 'users.get self skipped (no apikey)');
+    doTest (null, 'user.get self', [
+      ['warn', 'skipped', 'BITMINTER_APIKEY', 'set']
+    ]);
   } else {
     bitminter.users.get (function (err, data) {
       doTest (err, 'users.get self', [
@@ -294,9 +290,13 @@ queue.push (function () {
 
 queue.push (function () {
   if (!config.apikey) {
-    log ('info', 'users.get username skipped (no apikey)');
+    doTest (null, 'user.get username', [
+      ['warn', 'skipped', 'BITMINTER_APIKEY', 'set']
+    ]);
   } else if (!config.username) {
-    log ('info', 'users.get username skipped (no username)');
+    doTest (null, 'user.get username', [
+      ['warn', 'skipped', 'BITMINTER_USERNAME', 'set']
+    ]);
   } else {
     bitminter.users.get (config.username, function (err, data) {
       doTest (err, 'users.get username', [
@@ -313,4 +313,4 @@ log ('note', 'Node.js:  ' + process.versions.node);
 log ('note', 'Module:   ' + pkg.version);
 console.log ();
 
-queue[0] ();
+queue [0] ();
