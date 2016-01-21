@@ -7,7 +7,6 @@ License:        Unlicense (public domain)
 
 'use strict';
 
-var util = require ('util');
 var path = require ('path');
 var dir = path.dirname (module.filename);
 
@@ -56,7 +55,7 @@ function typeStr (str) {
 
   switch (typeof str) {
     case 'string':
-      output = '"' + str +'"';
+      output = '"' + str + '"';
       break;
 
     case 'object':
