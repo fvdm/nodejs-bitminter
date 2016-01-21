@@ -161,7 +161,15 @@ Users methods
 ### users.get
 **( [username], callback )**
 
-Get stats and details _object_ about a user or yourself.
+Get stats and details _object_ about yourself or a user,
+provided you have sufficient access.
+
+
+argument | type     | required | default | description
+:--------|:---------|:---------|:--------|:----------------------
+username | string   | no       | _null_  | Username to lookup
+callback | function | yes      |         | Process results
+
 
 ```js
 // Yourself
