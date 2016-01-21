@@ -3,7 +3,7 @@ bitminter
 
 Bitminter API methods for Node.js
 
-[![Codeship Status for fvdm/nodejs-geoip2ws](https://codeship.com/projects/199d3700-7bc9-0133-302f-5e23d6b78f76/status?branch=master)](https://codeship.com/projects/119704)
+[![Codeship Status for fvdm/nodejs-bitminter](https://codeship.com/projects/42c2cb80-856b-0133-ce9f-06ff5ec88d30/status?branch=master)](https://codeship.com/projects/122283)
 
 * [Node.js](https://www.nodejs.org)
 * [Bitminter](https://bitminter.com)
