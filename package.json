@@ -6,7 +6,7 @@
   },
   "name": "bitminter",
   "description": "API wrapper for BitMinter.com",
-  "version": "2.0.3",
+  "version": "2.0.4",
   "repository": {
     "type": "git",
     "url": "git://github.com/fvdm/nodejs-bitminter.git"
