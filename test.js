@@ -17,6 +17,7 @@ var next = 0;
 // set env GEOIP2WS_USERID and GEOIP2WS_LICENSE  (CI tests)
 var config = {
   apikey: process.env.BITMINTER_APIKEY || null,
+  username: process.env.BITMINTER_USERNAME || null,
   timeout: process.env.BITMINTER_TIMEOUT || 5000
 };
 
@@ -232,8 +233,10 @@ queue.push (function () {
 queue.push (function () {
   if (!config.apikey) {
     log ('info', 'users.get username skipped (no apikey)');
+  } else if (!config.username) {
+    log ('info', 'users.get username skipped (no username)');
   } else {
-    bitminter.users.get ('th1nk3r', function (err, data) {
+    bitminter.users.get (config.username, function (err, data) {
       doTest (err, 'users.get username', [
         ['type', data instanceof Object]
       ]);
