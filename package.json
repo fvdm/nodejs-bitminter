@@ -18,12 +18,14 @@
   "dependencies": {
     "httpreq": "0.4.x"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "eslint": "1.x"
+  },
   "engines": {
     "node": ">=0.8.0"
   },
   "scripts": {
-    "test": "node test.js"
+    "test": "eslint . && node test.js"
   },
   "keywords": [
     "bitminter",
