@@ -22,7 +22,7 @@
     "eslint": "1.x"
   },
   "engines": {
-    "node": ">=0.8.0"
+    "node": ">=0.12.0"
   },
   "scripts": {
     "test": "eslint . && node test.js"
