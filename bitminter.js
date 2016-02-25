@@ -134,7 +134,7 @@ app.users.get = function (username, callback) {
  */
 
 module.exports = function (conf) {
-  config.apikey = conf.apikey || null;
-  config.timeout = conf.timeout || 5000;
+  config.apikey = conf && conf.apikey || null;
+  config.timeout = conf && conf.timeout || 5000;
   return app;
 };
