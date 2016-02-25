@@ -19,7 +19,7 @@
     "httpreq": "0.4.x"
   },
   "devDependencies": {
-    "eslint": "1.x"
+    "eslint": "2.x"
   },
   "engines": {
     "node": ">=0.12.0"
