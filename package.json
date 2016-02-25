@@ -27,6 +27,7 @@
   "scripts": {
     "test": "node test.js ; eslint ."
   },
+  "tonicExampleFilename": "example.js",
   "keywords": [
     "bitminter",
     "bitcoin",
