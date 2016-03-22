@@ -86,7 +86,7 @@ dotest.add ('pool.blocks option', function () {
     dotest.test (err)
       .isArray ('fail', 'data', data)
       .isNotEmpty ('warn', 'data', data)
-      .isExactly ('fail', 'data.length <= 3', data && data.length <= 3, true)
+      .isCondition ('fail', 'data.length <= 3', data && data.length, '<=', 3)
       .done ();
   });
 });
@@ -107,7 +107,7 @@ dotest.add ('pool.shifts option', function () {
     dotest.test (err)
       .isArray ('fail', 'data', data)
       .isNotEmpty ('warn', 'data', data)
-      .isExactly ('fail', 'data.length <= 3', data && data.length <= 3, true)
+      .isCondition ('fail', 'data.length <= 3', data && data.length, '<=', 3)
       .done ();
   });
 });
