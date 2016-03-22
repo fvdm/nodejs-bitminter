@@ -126,6 +126,7 @@ dotest.add ('pool.top50', function () {
 dotest.add ('user.get self', function () {
   if (!config.apikey) {
     dotest.log ('warn', 'Skipped - BITMINTER_APIKEY not set');
+    dotest.test () .done ();
     return;
   }
 
