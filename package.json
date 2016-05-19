@@ -16,11 +16,11 @@
   },
   "main": "bitminter.js",
   "dependencies": {
-    "httpreq": "^0.4.16"
+    "httpreq": "^0.4.22"
   },
   "devDependencies": {
-    "eslint": "^2.5.1",
-    "dotest": "^1.2.0"
+    "eslint": "^2.10.2",
+    "dotest": "^1.11.0"
   },
   "engines": {
     "node": ">=0.12.0"
