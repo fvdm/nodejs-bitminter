@@ -4,6 +4,7 @@ bitminter
 Bitminter API methods for Node.js
 
 [![Build Status](https://travis-ci.org/fvdm/nodejs-bitminter.svg?branch=master)](https://travis-ci.org/fvdm/nodejs-bitminter)
+[![Dependency Status](https://gemnasium.com/badges/github.com/fvdm/nodejs-bitminter.svg)](https://gemnasium.com/github.com/fvdm/nodejs-bitminter#runtime-dependencies)
 
 * [Node.js](https://www.nodejs.org)
 * [Bitminter](https://bitminter.com)
@@ -212,6 +213,4 @@ For more information, please refer to <http://unlicense.org/>
 Author
 ------
 
-Franklin van de Meent
-| [Website](https://frankl.in)
-| [Github](https://github.com/fvdm)
+[Franklin van de Meent](https://frankl.in)
