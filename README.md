@@ -24,7 +24,10 @@ var bitminter = require ('bitminter') ({
 });
 
 bitminter.users.get (function (err, user) {
-  if (err) { return console.log (err); }
+  if (err) {
+    return console.log (err);
+  }
+
   console.log (user.hash_rate);
 });
 ```
@@ -58,10 +61,8 @@ var bitminter = require ('bitminter') (config);
 ```
 
 
-Pool methods
-------------
-
-### pool.stats
+pool.stats
+----------
 **( callback )**
 
 Pool statistics _object_
@@ -71,7 +72,8 @@ bitminter.pool.stats (console.log);
 ```
 
 
-### pool.hashrate
+pool.hashrate
+-------------
 **( callback )**
 
 Current pool hash rate _number_
@@ -81,7 +83,8 @@ bitminter.pool.hashrate (console.log);
 ```
 
 
-### pool.workers
+pool.workers
+------------
 **( callback )**
 
 Current pool workers _number_
@@ -91,7 +94,8 @@ bitminter.pool.workers (console.log);
 ```
 
 
-### pool.users
+pool.users
+----------
 **( callback )**
 
 Current pool users _number_
@@ -101,7 +105,8 @@ bitminter.pool.users (console.log);
 ```
 
 
-### pool.round
+pool.round
+----------
 **( callback )**
 
 Current pool round _object_
@@ -111,7 +116,8 @@ bitminter.pool.round (console.log);
 ```
 
 
-### pool.blocks
+pool.blocks
+-----------
 **( [options], callback )**
 
 Current pool blocks _array_
@@ -129,7 +135,8 @@ bitminter.pool.blocks ({ max: 5 }, console.log);
 ```
 
 
-### pool.shifts
+pool.shifts
+-----------
 **( [options], callback )**
 
 Current pool shifts _array_
@@ -146,7 +153,8 @@ bitminter.pool.shifts ({ offset: 10 }, console.log);
 ```
 
 
-### pool.top50
+pool.top50
+----------
 **( callback )**
 
 Pool top 50 _object_
@@ -156,10 +164,8 @@ bitminter.pool.top50 (console.log);
 ```
 
 
-Users methods
--------------
-
-### users.get
+users.get
+---------
 **( [username], callback )**
 
 Get stats and details _object_ about yourself or a user,
