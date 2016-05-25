@@ -1,7 +1,7 @@
 bitminter
 =========
 
-Bitminter API methods for Node.js
+Bitminter API methods for Node.js (unofficial)
 
 [![Build Status](https://travis-ci.org/fvdm/nodejs-bitminter.svg?branch=master)](https://travis-ci.org/fvdm/nodejs-bitminter)
 [![Dependency Status](https://gemnasium.com/badges/github.com/fvdm/nodejs-bitminter.svg)](https://gemnasium.com/github.com/fvdm/nodejs-bitminter#runtime-dependencies)
