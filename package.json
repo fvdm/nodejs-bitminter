@@ -5,7 +5,7 @@
     "url": "https://frankl.in"
   },
   "name": "bitminter",
-  "description": "API wrapper for BitMinter.com",
+  "description": "API methods for BitMinter.com (unofficial)",
   "version": "2.1.0",
   "repository": {
     "type": "git",
