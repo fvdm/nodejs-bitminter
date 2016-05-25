@@ -33,6 +33,8 @@
     "bitminter",
     "bitcoin",
     "statistics",
+    "mining",
+    "money",
     "api"
   ],
   "license": "Unlicense"
