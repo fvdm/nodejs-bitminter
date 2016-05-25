@@ -9,7 +9,50 @@ License:      Unlicense (see UNLICENSE file)
 
 var httpreq = require ('httpreq');
 var app = {};
-var config = {};
+
+var config = {
+  apikey: null,
+  timeout: 5000
+};
+
+
+/**
+ * Process HTTP response
+ *
+ * @callback callback
+ * @param err {Error, null} - httpreq error
+ * @param res {object} - Response details
+ * @param callback {function} - `function (err, data) {}`
+ + @returns {void}
+ */
+
+function processResponse (err, res, callback) {
+  var error = null;
+  var data = res && res.body || null;
+
+  if (err) {
+    callback (err);
+    return;
+  }
+
+  if (res.statusCode >= 300) {
+    error = new Error ('API error');
+    error.statusCode = res.statusCode;
+    error.data = data;
+    callback (error);
+    return;
+  }
+
+  try {
+    data = JSON.parse (data);
+  } catch (e) {
+    error = new Error ('invalid response');
+    error.statusCode = res.statusCode;
+    error.data = data;
+  }
+
+  callback (error, data);
+}
 
 
 /**
@@ -41,33 +84,11 @@ function talk (path, props, cb) {
   opts.parameters = props;
   opts.timeout = config.timeout;
 
-  httpreq.get (url, opts, function (err, res) {
-    var error = null;
-    var data = res && res.body || null;
+  function httpResponse (err, res) {
+    processResponse (err, res, cb);
+  }
 
-    if (err) {
-      cb (err);
-      return;
-    }
-
-    if (res.statusCode >= 300) {
-      error = new Error ('API error');
-      error.statusCode = res.statusCode;
-      error.data = data;
-      cb (error);
-      return;
-    }
-
-    try {
-      data = JSON.parse (data);
-    } catch (e) {
-      error = new Error ('invalid response');
-      error.statusCode = res.statusCode;
-      error.data = data;
-    }
-
-    cb (error, data);
-  });
+  httpreq.get (url, opts, httpResponse);
 }
 
 
@@ -135,6 +156,6 @@ app.users.get = function (username, callback) {
 
 module.exports = function (conf) {
   config.apikey = conf && conf.apikey || null;
-  config.timeout = conf && conf.timeout || 5000;
+  config.timeout = conf && conf.timeout || config.timeout;
   return app;
 };
