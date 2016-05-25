@@ -21,9 +21,9 @@ var bitminter = app (config);
 
 
 // METHODS
-dotest.add ('pool.stats', function () {
+dotest.add ('pool.stats', function (test) {
   bitminter.pool.stats (function (err, data) {
-    dotest.test (err)
+    test (err)
       .isObject ('fail', 'data', data)
       .isNotEmpty ('warn', 'data', data)
       .done ();
@@ -31,9 +31,9 @@ dotest.add ('pool.stats', function () {
 });
 
 
-dotest.add ('pool.hashrate', function () {
+dotest.add ('pool.hashrate', function (test) {
   bitminter.pool.hashrate (function (err, data) {
-    dotest.test (err)
+    test (err)
       .isNumber ('fail', 'data', data)
       .isNotEmpty ('warn', 'data', data)
       .done ();
@@ -41,9 +41,9 @@ dotest.add ('pool.hashrate', function () {
 });
 
 
-dotest.add ('pool.workers', function () {
+dotest.add ('pool.workers', function (test) {
   bitminter.pool.workers (function (err, data) {
-    dotest.test (err)
+    test (err)
       .isNumber ('fail', 'data', data)
       .isNotEmpty ('warn', 'data', data)
       .done ();
@@ -51,9 +51,9 @@ dotest.add ('pool.workers', function () {
 });
 
 
-dotest.add ('pool.users', function () {
+dotest.add ('pool.users', function (test) {
   bitminter.pool.users (function (err, data) {
-    dotest.test (err)
+    test (err)
       .isNumber ('fail', 'data', data)
       .isNotEmpty ('warn', 'data', data)
       .done ();
@@ -61,9 +61,9 @@ dotest.add ('pool.users', function () {
 });
 
 
-dotest.add ('pool.round', function () {
+dotest.add ('pool.round', function (test) {
   bitminter.pool.round (function (err, data) {
-    dotest.test (err)
+    test (err)
       .isObject ('fail', 'data', data)
       .isNotEmpty ('warn', 'data', data)
       .done ();
@@ -71,9 +71,9 @@ dotest.add ('pool.round', function () {
 });
 
 
-dotest.add ('pool.blocks normal', function () {
+dotest.add ('pool.blocks normal', function (test) {
   bitminter.pool.blocks (function (err, data) {
-    dotest.test (err)
+    test (err)
       .isArray ('fail', 'data', data)
       .isNotEmpty ('warn', 'data', data)
       .done ();
@@ -81,9 +81,9 @@ dotest.add ('pool.blocks normal', function () {
 });
 
 
-dotest.add ('pool.blocks option', function () {
+dotest.add ('pool.blocks option', function (test) {
   bitminter.pool.blocks ({ max: 3 }, function (err, data) {
-    dotest.test (err)
+    test (err)
       .isArray ('fail', 'data', data)
       .isNotEmpty ('warn', 'data', data)
       .isCondition ('fail', 'data.length', data && data.length, '<=', 3)
@@ -92,9 +92,9 @@ dotest.add ('pool.blocks option', function () {
 });
 
 
-dotest.add ('pool.shifts normal', function () {
+dotest.add ('pool.shifts normal', function (test) {
   bitminter.pool.shifts (function (err, data) {
-    dotest.test (err)
+    test (err)
       .isArray ('fail', 'data', data)
       .isNotEmpty ('warn', 'data', data)
       .done ();
@@ -102,9 +102,9 @@ dotest.add ('pool.shifts normal', function () {
 });
 
 
-dotest.add ('pool.shifts option', function () {
+dotest.add ('pool.shifts option', function (test) {
   bitminter.pool.shifts ({ max: 3 }, function (err, data) {
-    dotest.test (err)
+    test (err)
       .isArray ('fail', 'data', data)
       .isNotEmpty ('warn', 'data', data)
       .isCondition ('fail', 'data.length', data && data.length, '<=', 3)
@@ -113,9 +113,9 @@ dotest.add ('pool.shifts option', function () {
 });
 
 
-dotest.add ('pool.top50', function () {
+dotest.add ('pool.top50', function (test) {
   bitminter.pool.top50 (function (err, data) {
-    dotest.test (err)
+    test (err)
       .isObject ('fail', 'data', data)
       .isNotEmpty ('warn', 'data', data)
       .done ();
@@ -123,15 +123,16 @@ dotest.add ('pool.top50', function () {
 });
 
 
-dotest.add ('user.get self', function () {
+dotest.add ('user.get self', function (test) {
   if (!config.apikey) {
     dotest.log ('warn', 'Skipped - BITMINTER_APIKEY not set');
-    dotest.test () .done ();
+    test ()
+      .done ();
     return;
   }
 
   bitminter.users.get (function (err, data) {
-    dotest.test (err)
+    test (err)
       .isObject ('fail', 'data', data)
       .isNotEmpty ('warn', 'data', data)
       .done ();
@@ -139,7 +140,7 @@ dotest.add ('user.get self', function () {
 });
 
 
-dotest.add ('user.get username', function () {
+dotest.add ('user.get username', function (test) {
   if (!config.apikey) {
     dotest.log ('warn', 'Skipped - BITMINTER_APIKEY not set');
     return;
@@ -151,7 +152,7 @@ dotest.add ('user.get username', function () {
   }
 
   bitminter.users.get (config.username, function (err, data) {
-    dotest.test (err)
+    test (err)
       .isObject ('fail', 'data', data)
       .isNotEmpty ('warn', 'data', data)
       .done ();
