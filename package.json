@@ -16,7 +16,6 @@
   },
   "main": "bitminter.js",
   "files": [
-    "CHANGELOG.md",
     "example.js"
   ],
   "dependencies": {
