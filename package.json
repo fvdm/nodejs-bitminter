@@ -23,8 +23,8 @@
     "httpreq": "^0.4.22"
   },
   "devDependencies": {
-    "eslint": "^2.10.2",
-    "dotest": "^1.11.0"
+    "eslint": "^2.11.1",
+    "dotest": "^1.12.2"
   },
   "engines": {
     "node": ">=0.12.0"
