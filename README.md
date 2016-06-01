@@ -6,6 +6,7 @@ Bitminter API methods for Node.js (unofficial)
 [![npm](https://img.shields.io/npm/v/bitminter.svg?maxAge=3600)](https://github.com/fvdm/nodejs-bitminter/blob/master/CHANGELOG.md)
 [![Build Status](https://travis-ci.org/fvdm/nodejs-bitminter.svg?branch=master)](https://travis-ci.org/fvdm/nodejs-bitminter)
 [![Dependency Status](https://gemnasium.com/badges/github.com/fvdm/nodejs-bitminter.svg)](https://gemnasium.com/github.com/fvdm/nodejs-bitminter#runtime-dependencies)
+[![Test Coverage](https://codeclimate.com/github/fvdm/nodejs-bitminter/badges/coverage.svg)](https://codeclimate.com/github/fvdm/nodejs-bitminter/coverage)
 
 * [Node.js](https://www.nodejs.org)
 * [Bitminter](https://bitminter.com)
