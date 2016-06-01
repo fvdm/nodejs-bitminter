@@ -1,3 +1,21 @@
+#### 2.1.2 (2016-6-1)
+
+##### Chores
+
+* **package:**
+  * CHANGELOG.md is included by default ([f32401c6](https://github.com/fvdm/nodejs-bitminter/commit/f32401c6e34defad2cafa7f242c8e99f288c1578))
+  * Update dependencies versions ([f68b5f5e](https://github.com/fvdm/nodejs-bitminter/commit/f68b5f5e5dea24ff70a8a56eb320866479f81e7d))
+
+##### Documentation Changes
+
+* **badges:** Add CodeClimate coverage ([aa48b80e](https://github.com/fvdm/nodejs-bitminter/commit/aa48b80ef08e42adb90b39f81c225bf397cfc19e))
+* **readme:** Add version badge for changelog ([9858158c](https://github.com/fvdm/nodejs-bitminter/commit/9858158c5f4f6ef0979f48949b56440eba5b03a4))
+
+##### Tests
+
+* **config:** Enable duplication on CodeClimate ([031125a3](https://github.com/fvdm/nodejs-bitminter/commit/031125a3b6cb4a88017d3a21d73fc581b77f9882))
+* **script:** Add CodeClimate ([f468f803](https://github.com/fvdm/nodejs-bitminter/commit/f468f80315a9457a0fea9781a7631c70d023da84))
+
 #### 2.1.1 (2016-5-25)
 
 ##### Chores
