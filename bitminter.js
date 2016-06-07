@@ -17,6 +17,26 @@ var config = {
 
 
 /**
+ * Process HTTP client error
+ *
+ * @callback callback
+ * @param err {Error} - The error to call back
+ * @param res {object} - httpreq response details
+ * @param message {string} - Error message
+ * @param callback {function} - `function (err, data) {}`
+ * @returns {void}
+ */
+
+function processError (err, res, message, callback) {
+  var error = new Error (message);
+
+  error.statusCode = res && res.statusCode;
+  error.data = res && res.body;
+  callback (error);
+}
+
+
+/**
  * Process HTTP response
  *
  * @callback callback
@@ -27,7 +47,6 @@ var config = {
  */
 
 function processResponse (err, res, callback) {
-  var error = null;
   var data = res && res.body || null;
 
   if (err) {
@@ -36,22 +55,18 @@ function processResponse (err, res, callback) {
   }
 
   if (res.statusCode >= 300) {
-    error = new Error ('API error');
-    error.statusCode = res.statusCode;
-    error.data = data;
-    callback (error);
+    processError (err, res, 'API error', callback);
     return;
   }
 
   try {
     data = JSON.parse (data);
   } catch (e) {
-    error = new Error ('invalid response');
-    error.statusCode = res.statusCode;
-    error.data = data;
+    processError (err, res, 'invalid response', callback);
+    return;
   }
 
-  callback (error, data);
+  callback (null, data);
 }
 
 
