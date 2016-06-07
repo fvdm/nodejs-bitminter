@@ -14,7 +14,7 @@ var app = require ('./');
 var config = {
   apikey: process.env.BITMINTER_APIKEY || null,
   username: process.env.BITMINTER_USERNAME || null,
-  timeout: process.env.BITMINTER_TIMEOUT || 5000
+  timeout: process.env.BITMINTER_TIMEOUT || null
 };
 
 var bitminter = app (config);
