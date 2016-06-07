@@ -17,13 +17,13 @@ var config = {
   timeout: process.env.BITMINTER_TIMEOUT || null
 };
 
-var bitminter = app (config);
+var bitminter = new app (config);
 
-var unauth = app ({
+var unauth = new app ({
   timeout: config.timeout
 });
 
-var timeout = app ({
+var timeout = new app ({
   timeout: 1
 });
 
