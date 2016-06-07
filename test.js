@@ -19,6 +19,14 @@ var config = {
 
 var bitminter = app (config);
 
+var unauth = app ({
+  timeout: config.timeout
+});
+
+var timeout = app ({
+  timeout: 1
+});
+
 
 // METHODS
 dotest.add ('pool.stats', function (test) {
@@ -124,13 +132,6 @@ dotest.add ('pool.top50', function (test) {
 
 
 dotest.add ('user.get self', function (test) {
-  if (!config.apikey) {
-    dotest.log ('warn', 'Skipped - BITMINTER_APIKEY not set');
-    test ()
-      .done ();
-    return;
-  }
-
   bitminter.users.get (function (err, data) {
     test (err)
       .isObject ('fail', 'data', data)
@@ -141,20 +142,33 @@ dotest.add ('user.get self', function (test) {
 
 
 dotest.add ('user.get username', function (test) {
-  if (!config.apikey) {
-    dotest.log ('warn', 'Skipped - BITMINTER_APIKEY not set');
-    return;
-  }
-
-  if (!config.username) {
-    dotest.log ('warn', 'Skipped - BITMINTER_USERNAME not set');
-    return;
-  }
-
   bitminter.users.get (config.username, function (err, data) {
     test (err)
       .isObject ('fail', 'data', data)
       .isNotEmpty ('warn', 'data', data)
+      .done ();
+  });
+});
+
+
+dotest.add ('Timeout error', function (test) {
+  timeout.pool.stats (function (err, data) {
+    test ()
+      .isError ('fail', 'err', err)
+      .isExactly ('fail', 'err.code', err && err.code, 'TIMEOUT')
+      .isUndefined ('fail', 'data', data)
+      .done ();
+  });
+});
+
+
+dotest.add ('API error', function (test) {
+  unauth.users.get (config.username, function (err, data) {
+    test ()
+      .isError ('fail', 'err', err)
+      .isExactly ('fail', 'err.message', err && err.message, 'API error')
+      .isNumber ('fail', 'err.statusCode', err && err.statusCode)
+      .isUndefined ('fail', 'data', data)
       .done ();
   });
 });
