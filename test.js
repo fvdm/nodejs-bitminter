@@ -17,15 +17,7 @@ var config = {
   timeout: process.env.BITMINTER_TIMEOUT || null
 };
 
-var bitminter = new app (config);
-
-var unauth = new app ({
-  timeout: config.timeout
-});
-
-var timeout = new app ({
-  timeout: 1
-});
+var bitminter = app (config);
 
 
 // MODULE
@@ -174,23 +166,27 @@ dotest.add ('users.get username', function (test) {
 });
 
 
-dotest.add ('Timeout error', function (test) {
-  timeout.pool.stats (function (err, data) {
+dotest.add ('API error', function (test) {
+  bitminter.users.get ('th1nk3r', function (err, data) {
     test ()
       .isError ('fail', 'err', err)
-      .isExactly ('fail', 'err.code', err && err.code, 'TIMEOUT')
+      .isExactly ('fail', 'err.message', err && err.message, 'API error')
+      .isNumber ('fail', 'err.statusCode', err && err.statusCode)
       .isUndefined ('fail', 'data', data)
       .done ();
   });
 });
 
 
-dotest.add ('API error', function (test) {
-  unauth.users.get (config.username, function (err, data) {
+dotest.add ('Timeout error', function (test) {
+  var timeout = app ({
+    timeout: 1
+  });
+
+  timeout.pool.stats (function (err, data) {
     test ()
       .isError ('fail', 'err', err)
-      .isExactly ('fail', 'err.message', err && err.message, 'API error')
-      .isNumber ('fail', 'err.statusCode', err && err.statusCode)
+      .isExactly ('fail', 'err.code', err && err.code, 'TIMEOUT')
       .isUndefined ('fail', 'data', data)
       .done ();
   });
