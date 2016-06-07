@@ -28,6 +28,29 @@ var timeout = app ({
 });
 
 
+// MODULE
+dotest.add ('Module interface', function (test) {
+  var pool = bitminter.pool;
+  var users = bitminter.users;
+
+  test ()
+    .isFunction ('fail', 'exports', app)
+    .isObject ('fail', 'interface', bitminter)
+    .isObject ('fail', '.pool', pool)
+    .isFunction ('fail', '.pool.stats', pool && pool.stats)
+    .isFunction ('fail', '.pool.hashrate', pool && pool.hashrate)
+    .isFunction ('fail', '.pool.workers', pool && pool.workers)
+    .isFunction ('fail', '.pool.users', pool && pool.users)
+    .isFunction ('fail', '.pool.round', pool && pool.round)
+    .isFunction ('fail', '.pool.blocks', pool && pool.blocks)
+    .isFunction ('fail', '.pool.shifts', pool && pool.shifts)
+    .isFunction ('fail', '.pool.top50', pool && pool.top50)
+    .isObject ('fail', '.users', users)
+    .isFunction ('fail', '.users.get', users && users.get)
+    .done ();
+});
+
+
 // METHODS
 dotest.add ('pool.stats', function (test) {
   bitminter.pool.stats (function (err, data) {
