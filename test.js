@@ -154,7 +154,7 @@ dotest.add ('pool.top50', function (test) {
 });
 
 
-dotest.add ('user.get self', function (test) {
+dotest.add ('users.get self', function (test) {
   bitminter.users.get (function (err, data) {
     test (err)
       .isObject ('fail', 'data', data)
@@ -164,7 +164,7 @@ dotest.add ('user.get self', function (test) {
 });
 
 
-dotest.add ('user.get username', function (test) {
+dotest.add ('users.get username', function (test) {
   bitminter.users.get (config.username, function (err, data) {
     test (err)
       .isObject ('fail', 'data', data)
