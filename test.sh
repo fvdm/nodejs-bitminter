@@ -11,7 +11,7 @@ if [ "$TRAVIS_BRANCH" == "master" ]; then
 
   echo "Commits since $lastTag to $thisTag"
   echo
-  git log $lastTag..HEAD --oneline --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --graph
+  git log $lastTag..HEAD --oneline --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
   echo
 fi
 
