@@ -1,3 +1,9 @@
+#### 2.1.5 (2016-8-22)
+
+##### Tests
+
+* **runner:** Removed graph from commits log ([66b779bb](https://github.com/fvdm/nodejs-bitminter/commit/66b779bb070033ffe089eaf30390ea2850d0f83e))
+
 #### 2.1.4 (2016-8-22)
 
 ##### Chores
