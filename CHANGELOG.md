@@ -1,3 +1,31 @@
+#### 2.1.4 (2016-8-22)
+
+##### Chores
+
+* **develop:** Added gitignore config ([367b2ed2](https://github.com/fvdm/nodejs-bitminter/commit/367b2ed22982514e6a8a7f20341438f94bbfddb9))
+* **package:**
+  * update istanbul to version 0.4.5 ([95f1b80e](https://github.com/fvdm/nodejs-bitminter/commit/95f1b80e66f0a57c2ebf442287d607cb294a7fa4))
+  * update eslint to version 3.0.0 ([58094b87](https://github.com/fvdm/nodejs-bitminter/commit/58094b879668c4b4450e6bd776c104ea6a0614c3))
+
+##### Bug Fixes
+
+* **error:** Fixed processError() msg reference ([5ab1fa58](https://github.com/fvdm/nodejs-bitminter/commit/5ab1fa5845a28c859fd767dab992226a6a78a314))
+
+##### Refactors
+
+* **error:** Reordered processError args ([3d2ef76b](https://github.com/fvdm/nodejs-bitminter/commit/3d2ef76b62d8708f8c6b7becb2da2986179cd89a))
+* **package:** Minimum supported node v4.0 ([cd71c0a1](https://github.com/fvdm/nodejs-bitminter/commit/cd71c0a1c8ca02e66984eb74e515dd25cca9be6c))
+
+##### Code Style Changes
+
+* **eslint:** Only warn on underscore dangle ([3043effd](https://github.com/fvdm/nodejs-bitminter/commit/3043effd121be2c7cc223a1981db38e0daedbab3))
+
+##### Tests
+
+* **runner:**
+  * Log commits since last release ([3493de5c](https://github.com/fvdm/nodejs-bitminter/commit/3493de5cb7ecd2cefcce670ff8e13c3b0624fa77))
+  * More verbose test output ([a1249b0a](https://github.com/fvdm/nodejs-bitminter/commit/a1249b0a128374840b53b61e266b0a16ba6f0860))
+
 #### 2.1.3 (2016-6-7)
 
 ##### Documentation Changes
