@@ -1,6 +1,20 @@
 #!/bin/bash
 result=0
 
+if [ "$TRAVIS_BRANCH" == "master" ]; then
+  thisTag=`git describe --tags --abbrev=0`
+  lastTag=`git describe --tags --abbrev=0 HEAD^`
+
+  if [ "$thisTag" == "$lastTag" ]; then
+    thisTag="HEAD"
+  fi
+
+  echo "Commits since $lastTag to $thisTag"
+  echo
+  git log $lastTag..HEAD --oneline --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --graph
+  echo
+fi
+
 echo "Running ESLint..."
 eslint *.js lib/ || result=1
 istanbul cover test.js || result=1
