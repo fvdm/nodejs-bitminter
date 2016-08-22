@@ -27,8 +27,8 @@ var config = {
  * @returns {void}
  */
 
-function processError (err, res, message, callback) {
-  var error = new Error (message);
+function processError (msg, err, res, callback) {
+  var error = new Error (msg);
 
   error.statusCode = res && res.statusCode;
   error.data = res && res.body;
@@ -55,14 +55,14 @@ function processResponse (err, res, callback) {
   }
 
   if (res.statusCode >= 300) {
-    processError (err, res, 'API error', callback);
+    processError ('API error', err, res, callback);
     return;
   }
 
   try {
     data = JSON.parse (data);
   } catch (e) {
-    processError (err, res, 'invalid response', callback);
+    processError ('invalid response', err, res, callback);
     return;
   }
 
