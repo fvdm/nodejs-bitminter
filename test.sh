@@ -13,10 +13,13 @@ if [ "$TRAVIS_BRANCH" == "master" ]; then
   echo
   git log $lastTag..HEAD --oneline --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
   echo
+  echo
 fi
 
 echo "Running ESLint..."
 eslint *.js lib/ || result=1
+echo
+
 istanbul cover test.js || result=1
 
 if [ "$TRAVIS" == "true" ]; then
