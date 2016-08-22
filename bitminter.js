@@ -28,7 +28,7 @@ var config = {
  */
 
 function processError (msg, err, res, callback) {
-  var error = new Error (message);
+  var error = new Error (msg);
 
   error.statusCode = res && res.statusCode;
   error.data = res && res.body;
