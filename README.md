@@ -1,6 +1,8 @@
 bitminter
 =========
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/fvdm/nodejs-bitminter.svg)](https://greenkeeper.io/)
+
 Bitminter API methods for Node.js (unofficial)
 
 [![npm](https://img.shields.io/npm/v/bitminter.svg?maxAge=3600)](https://github.com/fvdm/nodejs-bitminter/blob/master/CHANGELOG.md)
