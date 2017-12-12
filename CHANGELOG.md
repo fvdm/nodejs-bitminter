@@ -1,3 +1,30 @@
+#### 2.1.6 (2017-12-12)
+
+##### Chores
+
+* **package:**
+  * update coveralls to version 3.0.0 ([#23](https://github.com/fvdm/nodejs-bitminter/pull/23)) ([3f70d9aa](https://github.com/fvdm/nodejs-bitminter/commit/3f70d9aaf5c622d5b3e79cc9fd3dec91f71e5487))
+  * update eslint to version 4.2.0 ([828f1f9b](https://github.com/fvdm/nodejs-bitminter/commit/828f1f9b5f54fa5e06933860ff886d6bbffa1a56))
+  * Update dotest dev dep ([060ba207](https://github.com/fvdm/nodejs-bitminter/commit/060ba2077e21b09b8e464638383192fdf790e669))
+  * Update dev deps ([f701a7f2](https://github.com/fvdm/nodejs-bitminter/commit/f701a7f2426a6e8862e0c067e92a792eaadaece8))
+  * Replaced test runner and dev deps by dotest ([a78e9db3](https://github.com/fvdm/nodejs-bitminter/commit/a78e9db3fe87f99a16977474a830911792907022))
+* **develop:** Added bitHound config ([0a3ccdc4](https://github.com/fvdm/nodejs-bitminter/commit/0a3ccdc405632b0b085d30597d95db2accb4036a))
+
+##### Other Changes
+
+* **chore:** Reduces dev deps to dotest ([7a47e54f](https://github.com/fvdm/nodejs-bitminter/commit/7a47e54fede4c145b9b78379eb627ccd3b887ab6))
+
+##### Refactors
+
+* **readme:** Add coffee link to Author ([da8e8fa5](https://github.com/fvdm/nodejs-bitminter/commit/da8e8fa54d00c2de669d7c40f2663258e75281bb))
+
+##### Tests
+
+* **config:**
+  * Update Travis CI node versions ([968f634c](https://github.com/fvdm/nodejs-bitminter/commit/968f634c20afc9f4731e2f5998e8f6a6612ce5d8))
+  * Use dynamic node versions on Travis CI ([16eae254](https://github.com/fvdm/nodejs-bitminter/commit/16eae254b5c51678b62676f9ee7be335351a93f4))
+* **runner:** Cleaner output with more whitespace ([bee1727f](https://github.com/fvdm/nodejs-bitminter/commit/bee1727fcdaed590edb03c9531dfc63af236a10c))
+
 #### 2.1.5 (2016-8-22)
 
 ##### Tests
