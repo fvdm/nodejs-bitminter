@@ -5,8 +5,9 @@ Bitminter API methods for Node.js (unofficial)
 
 [![npm](https://img.shields.io/npm/v/bitminter.svg?maxAge=3600)](https://github.com/fvdm/nodejs-bitminter/blob/master/CHANGELOG.md)
 [![Build Status](https://travis-ci.org/fvdm/nodejs-bitminter.svg?branch=master)](https://travis-ci.org/fvdm/nodejs-bitminter)
-[![Dependency Status](https://gemnasium.com/badges/github.com/fvdm/nodejs-bitminter.svg)](https://gemnasium.com/github.com/fvdm/nodejs-bitminter#runtime-dependencies)
 [![Coverage Status](https://coveralls.io/repos/github/fvdm/nodejs-bitminter/badge.svg?branch=master)](https://coveralls.io/github/fvdm/nodejs-bitminter?branch=master)
+[![bitHound Dependencies](https://www.bithound.io/github/fvdm/nodejs-bitminter/badges/master/dependencies.svg)](https://www.bithound.io/github/fvdm/nodejs-bitminter/master/dependencies/npm)
+[![bitHound Code](https://www.bithound.io/github/fvdm/nodejs-bitminter/badges/master/code.svg)](https://www.bithound.io/github/fvdm/nodejs-bitminter/master/files)
 [![Greenkeeper badge](https://badges.greenkeeper.io/fvdm/nodejs-bitminter.svg)](https://greenkeeper.io/)
 
 * [Node.js](https://www.nodejs.org)
